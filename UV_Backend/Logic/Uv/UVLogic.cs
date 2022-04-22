@@ -80,7 +80,28 @@ namespace UV_Backend.Logic.Uv
 
         public async Task<float> CalculateExposureTime(string scoreDescription, float uvi)
         {
-            return LogicHelpers.GetMED(scoreDescription) * uvi * 0.15f;
+            return uvi == 0 ? 0 : (LogicHelpers.GetMED(scoreDescription) / uvi) * 0.15f;
+        }
+
+        public async Task<string> CalculateRecommendedFPS(string scoreDescription)
+        {
+            switch (scoreDescription)
+            {
+                case "I":
+                    return "50";
+                case "II":
+                    return "50";
+                case "III":
+                    return "30-50";
+                case "IV":
+                    return "30";
+                case "V":
+                    return "15";
+                case "VI":
+                    return "15";
+                default:
+                    return "";
+            }
         }
     }
 }

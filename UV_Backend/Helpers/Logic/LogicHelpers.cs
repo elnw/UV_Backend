@@ -22,7 +22,8 @@ namespace UV_Backend.Helpers.Logic
 
         public static DateTime ConvertUTCToDatetime(long UTC)
         {
-            return DateTimeOffset.FromUnixTimeSeconds(UTC).LocalDateTime;
+            var easternZone = TimeZoneInfo.FindSystemTimeZoneById("SA Pacific Standard Time");
+            return TimeZoneInfo.ConvertTimeFromUtc(DateTimeOffset.FromUnixTimeSeconds(UTC).UtcDateTime, easternZone);
         }
 
         public static int GetMED(string scoreDescription)
@@ -44,5 +45,7 @@ namespace UV_Backend.Helpers.Logic
                     return 0;
             }
         }
+
+      
     }
 }

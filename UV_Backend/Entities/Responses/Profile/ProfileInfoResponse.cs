@@ -8,5 +8,7 @@ namespace UV_Backend.Entities.Responses.Profile
         public List<string> falseAdvices { get; set; }
         public List<string> truthAdvices { get; set; }
         public float uvi { get; set; }
+
+        public string fps { get; set; }
     }
 }

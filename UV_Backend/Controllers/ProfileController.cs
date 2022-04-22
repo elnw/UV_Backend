@@ -54,9 +54,9 @@ namespace UV_Backend.Controllers
         }
 
         [HttpGet("[action]")]
-        public async Task<JsonResult> GetExtraInfoByProfile([FromQuery] int profileId)
+        public async Task<JsonResult> GetExtraInfoByProfile([FromQuery] int profileId, float? input_uvi)
         {
-            float uvi = await _uvLogic.GetCurrentUVI();
+            float uvi = input_uvi ?? await _uvLogic.GetCurrentUVI();
             return Json(new ProfileInfoResponse
             {
                 ExposureTime = await _uvLogic.CalculateExposureTime(await _profileLogic.RetrieveScoreDescriptionByProfile(profileId), uvi),
@@ -68,7 +68,10 @@ namespace UV_Backend.Controllers
 ,               truthAdvices = new List<string>{"Hasta el 80% de la radiación UV puede penetrar las nubes. La neblina en la atmosfera incluso puede incrementar la exposición a la radiación UV", 
                                 "El agua ofrece protección minma ante la radiación UV y el reflejo puede aumentar dicha exposición a la radiación",
                                 "La radiación UV es mas baja durante el invierno, pero la nieve puede rflejar el doble de la exposición total, especialmente en altas altitudes. Presta atención cuando en la primavera la temperatura es baja pero los rayos son fuertes",
-                                "Las quemaduras solares son causas por la radiación UV, la cual no se puede sentir. La sensación de calor es causada por la radiación infraroja del sol y no por la radiación UV"}
+                                "Las quemaduras solares son causas por la radiación UV, la cual no se puede sentir. La sensación de calor es causada por la radiación infraroja del sol y no por la radiación UV"
+                               
+                },
+                fps = await _uvLogic.CalculateRecommendedFPS(await _profileLogic.RetrieveScoreDescriptionByProfile(profileId))
             });
         }
 
