@@ -39,6 +39,11 @@ namespace UV_Backend.Logic.Auth
 
         public async Task<ApiResponse<RegisterResponse>> RegisterUser(RegisterRequest registerRequest)
         {
+            if (await _userManager.FindByEmailAsync(registerRequest.Email) != null)
+            {
+                return new ApiResponse<RegisterResponse> { message = "El email registrado ya existe", data = new RegisterResponse { Code = "400" } };
+            }
+
             var user = new IdentityUser { UserName = registerRequest.UserName, Email = registerRequest.Email, EmailConfirmed = true };
             var result = await _userManager.CreateAsync(user, registerRequest.Password);
 
